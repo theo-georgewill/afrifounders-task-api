@@ -92,7 +92,7 @@ class AuthController extends Controller
     }
 
     //get current logged in user data
-    public function me(Request $request)
+    public function user(Request $request)
     {
         return response()->json($request->user());
     }

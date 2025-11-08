@@ -13,6 +13,6 @@ Route::middleware(['web'])->group(function () {
 
 //Api routes that need sanctum authentication
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/user', [AuthController::class, 'me']);
+    Route::get('/me', [AuthController::class, 'user']);
 
 });
