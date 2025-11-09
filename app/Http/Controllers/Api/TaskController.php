@@ -3,47 +3,65 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\TaskRequest;
+use App\Models\Task;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // List tasks for the authenticated user
+    public function index(): JsonResponse
     {
-        //
+        // Get optional query parameters
+        $status = request()->query('status'); // pending, in-progress, completed
+        $perPage = (int) request()->query('per_page', 10); // default 10 per page
+
+        $query = auth()->user()->tasks()->latest();
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        $tasks = $query->paginate($perPage);
+
+        return response()->json($tasks);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    // Create a new task
+    public function store(TaskRequest $request): JsonResponse
     {
-        //
+        $task = auth()->user()->tasks()->create($request->validated());
+        Log::info('Task created:', [$task]);
+        return response()->json($task, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    // Show a single task
+    public function show(Task $task): JsonResponse
     {
-        //
+        return response()->json($task);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    // Update a task
+    public function update(TaskRequest $request, Task $task): JsonResponse
     {
-        //
+        $task->update($request->validated());
+        return response()->json($task);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    // Delete a task
+    public function destroy(Task $task): JsonResponse
     {
-        //
+        $task->delete();
+        return response()->json(['message' => 'Task deleted successfully.']);
     }
+
+    /* Ensure the task belongs to the authenticated user
+    private function authorizeTask(Task $task): void
+    {
+        if ($task->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+    }
+        */
 }
