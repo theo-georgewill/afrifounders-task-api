@@ -2,7 +2,7 @@
 
 A Laravel RESTful API for task management. Users can register, authenticate, and manage tasks with CRUD operations. Tasks support soft deletion, filtering, and pagination. All key actions are logged.
 
-> **Note:** A lightweight React SPA frontend has been implemented in a separate repository for interacting with this API.
+> **Note:** A lightweight React SPA frontend has been implemented in a separate repository for interacting with this API. 
 
 ---
 
@@ -63,15 +63,15 @@ php artisan serve
 
 6. **API Endpoints**
 ```bash
-Method	Endpoint	    Description	Auth Required
-POST	/api/register	Register a new user	No
-POST	/api/login	    Login user	No
-POST	/api/logout	    Logout user	Yes
+Method	Endpoint	    Description	                                Auth Required
+POST	/api/register	Register a new user	                            No
+POST	/api/login	    Login user	                                    No
+POST	/api/logout	    Logout user	                                    Yes
 GET	    /api/tasks	    List tasks (filtering & pagination supported)	Yes
-POST	/api/tasks	    Create a new task	Yes
-GET	    /api/tasks/{id}	View a single task	Yes
-PUT	    /api/tasks/{id}	Update a task	Yes
-DELETE	/api/tasks/{id}	Soft delete a task	Yes
+POST	/api/tasks	    Create a new task	                            Yes
+GET	    /api/tasks/{id}	View a single task	                            Yes
+PUT	    /api/tasks/{id}	Update a task	                                Yes
+DELETE	/api/tasks/{id}	Soft delete a task	                            Yes
 ```
 
 6. **Filtering & Pagination**
