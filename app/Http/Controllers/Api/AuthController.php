@@ -50,9 +50,11 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
+        // Get the authenticated user
+        $user = Auth::user();
+
         // Important: regenerate session!
         $request->session()->regenerate();
-
 
        // If frontend requests token-based login (for API/mobile use)
         if ($request->boolean('with_token')) {
