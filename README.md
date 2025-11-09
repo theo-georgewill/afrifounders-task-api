@@ -33,7 +33,7 @@ A Laravel RESTful API for task management. Users can register, authenticate, and
 
 1. **Clone repository**
 ```bash
-git clone <github.com/theo-georgewill/afrifounders-task-api>
+git clone <github.com/theo-georgewill/afrifounders-task-api.git>
 cd <afrifounders-task-api>
 ```
 2. **Install dependencies**
@@ -53,6 +53,7 @@ php artisan serve
 4. **Run migrations & seeders**
 ```bash
 php artisan migrate --seed
+# Gives you a test user with email: test@example.com, and password: password
 ```
 
 5. **Serve the API**
