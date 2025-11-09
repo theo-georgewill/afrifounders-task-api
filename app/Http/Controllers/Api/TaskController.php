@@ -62,12 +62,4 @@ class TaskController extends Controller
         return response()->json(null, 204);
     }
 
-    /* Ensure the task belongs to the authenticated user
-    private function authorizeTask(Task $task): void
-    {
-        if ($task->user_id !== auth()->id()) {
-            abort(403, 'Unauthorized');
-        }
-    }
-        */
 }
