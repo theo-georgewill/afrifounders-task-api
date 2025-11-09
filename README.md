@@ -2,7 +2,7 @@
 
 A Laravel RESTful API for task management. Users can register, authenticate, and manage tasks with CRUD operations. Tasks support soft deletion, filtering, and pagination. All key actions are logged.
 
-> **Note:** A lightweight React SPA frontend has been implemented in a separate repository for interacting with this API. <github.com/theo-georgewill/afrifounders-task-frontend>
+> **Note:** A lightweight React SPA frontend has been implemented in a separate repository for interacting with this API. [Afrifounders-task-frontend](https://github.com/theo-georgewill/afrifounders-task-frontend)
 
 ---
 
