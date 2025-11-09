@@ -39,12 +39,16 @@ class TaskController extends Controller
     // Show a single task
     public function show(Task $task): JsonResponse
     {
+        $this->authorizeTask($task);
+
         return response()->json($task);
     }
 
     // Update a task
     public function update(TaskRequest $request, Task $task): JsonResponse
     {
+        $this->authorizeTask($task);
+
         $task->update($request->validated());
         return response()->json($task);
     }
@@ -52,6 +56,8 @@ class TaskController extends Controller
     // Delete a task
     public function destroy(Task $task): JsonResponse
     {
+        $this->authorizeTask($task);
+
         $task->delete();
 
         Log::info('Task soft deleted', [
@@ -62,4 +68,13 @@ class TaskController extends Controller
         return response()->json(null, 204);
     }
 
+    /**
+     * Ensure only the task creator can access the task.
+     */
+    private function authorizeTask(Task $task): void
+    {
+        if ($task->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+    }
 }

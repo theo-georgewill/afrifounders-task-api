@@ -93,6 +93,11 @@ class AuthController extends Controller
     // LOGOUT
     public function logout(Request $request)
     {
+
+        Log::info('User logging out', [
+            'user_id' => $request->user()->id,
+        ]);
+
         // If using token-based auth, delete the token
         if ($request->user()?->currentAccessToken()) {
             $request->user()->currentAccessToken()->delete();
@@ -104,10 +109,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        Log::info('User logged out', [
-            'user_id' => $request->user()->id,
-        ]);
-
         return response()->json(['message' => 'Logged out (cookie-based)']);
     }
 
@@ -117,7 +118,7 @@ class AuthController extends Controller
         Log::info('Fetched authenticated user', [
             'user_id' => $request->user()->id,
         ]);
-        
+
         return response()->json($request->user());
     }
 }
