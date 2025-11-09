@@ -53,7 +53,13 @@ class TaskController extends Controller
     public function destroy(Task $task): JsonResponse
     {
         $task->delete();
-        return response()->json(['message' => 'Task deleted successfully.']);
+
+        Log::info('Task soft deleted', [
+            'task_id' => $task->id,
+            'user_id' => auth()->id(),
+        ]);
+
+        return response()->json(null, 204);
     }
 
     /* Ensure the task belongs to the authenticated user
