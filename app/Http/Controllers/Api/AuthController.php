@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -26,6 +27,11 @@ class AuthController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
+        // Log user registration
+        Log::info('User registered', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+        ]);
 
         // Login to get session (for session-based auth)
         Auth::login($user);
@@ -47,6 +53,7 @@ class AuthController extends Controller
 
         // Attempt login
         if (!Auth::attempt($credentials)) {
+            Log::warning('Login attempt failed', ['email' => $request->email]);
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
@@ -56,7 +63,7 @@ class AuthController extends Controller
         // Important: regenerate session!
         $request->session()->regenerate();
 
-       // If frontend requests token-based login (for API/mobile use)
+        // If frontend requests token-based login (for API/mobile use)
         if ($request->boolean('with_token')) {
             $token = $user->createToken('api-token')->plainTextToken;
 
@@ -67,6 +74,13 @@ class AuthController extends Controller
                 'auth_type' => 'token',
             ]);
         }
+
+        // Log successful login
+        Log::info('User logged in', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'ip' => $request->ip(),
+        ]);
 
         // Default: session-based login (cookie mode)
         return response()->json([
@@ -79,7 +93,12 @@ class AuthController extends Controller
     // LOGOUT
     public function logout(Request $request)
     {
-        // If using token-based auth
+
+        Log::info('User logging out', [
+            'user_id' => $request->user()->id,
+        ]);
+
+        // If using token-based auth, delete the token
         if ($request->user()?->currentAccessToken()) {
             $request->user()->currentAccessToken()->delete();
             return response()->json(['message' => 'Logged out (token-based)']);
@@ -93,9 +112,13 @@ class AuthController extends Controller
         return response()->json(['message' => 'Logged out (cookie-based)']);
     }
 
-    //get current logged in user data
+    //get current authenticated user
     public function user(Request $request)
     {
+        Log::info('Fetched authenticated user', [
+            'user_id' => $request->user()->id,
+        ]);
+
         return response()->json($request->user());
     }
 }
