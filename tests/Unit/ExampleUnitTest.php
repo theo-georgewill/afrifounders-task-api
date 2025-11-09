@@ -10,13 +10,7 @@ class ExampleUnitTest extends TestCase
     #[Test]
     public function it_can_run_a_basic_test()
     {
-        // Arrange
         $value = true;
-
-        // Act
-        // (nothing yet)
-
-        // Assert
         $this->assertTrue($value);
     }
 }
