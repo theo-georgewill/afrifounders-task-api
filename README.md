@@ -64,7 +64,7 @@ php artisan serve
 
 6. **API Endpoints**
 ```bash
-Method	Endpoint	    Description	                                Auth Required
+Method	Endpoint	    Description	                                    Auth Required
 POST	/api/register	Register a new user	                            No
 POST	/api/login	    Login user	                                    No
 POST	/api/logout	    Logout user	                                    Yes
